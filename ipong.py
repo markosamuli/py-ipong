@@ -3,7 +3,7 @@
 import argparse
 import re
 
-from gevent import pywsgi
+from gevent import wsgi
 from gevent import monkey
 
 monkey.patch_all()
@@ -35,7 +35,7 @@ def valid_address(string):
     
 def main():
     parser = argparse.ArgumentParser(description='ipong server')
-    parser.add_argument('--address', type=valid_address, default='0.0.0.0')    
+    parser.add_argument('--address', type=valid_address, default='127.0.0.1')    
     parser.add_argument('--port', type=int, default=8088)
     args = parser.parse_args()
     address = args.address
@@ -43,7 +43,7 @@ def main():
     print "ipong -- starting server at http://" + address + ":" + str(port)
     #pool = Pool(10000) # do not accept more than 10000 connections
     #pywsgi.WSGIServer((host, port), application, spawn=pool).serve_forever()
-    pywsgi.WSGIServer((address, port), application).serve_forever()
+    wsgi.WSGIServer((address, port), application).serve_forever()
 
 if __name__ == '__main__':
     main()
